@@ -13,7 +13,6 @@ async function resubirDocumento(req, res) {
 
     const pool = await getPool();
 
-    // Verificar que la pre-solicitud esté en estado OBSERVADA
     const resPre = await pool.request()
       .input('id', sql.Int, preSolicitudId)
       .query(`SELECT estado FROM pre_solicitudes WHERE id = @id`);
@@ -26,11 +25,9 @@ async function resubirDocumento(req, res) {
       return res.status(400).json({ ok: false, mensaje: 'Solo se pueden resubir documentos en solicitudes OBSERVADAS.' });
     }
 
-    // Actualizar cada documento en BD
     for (const [campo, archivosArr] of Object.entries(archivos)) {
       const archivo = Array.isArray(archivosArr) ? archivosArr[0] : archivosArr;
 
-      // Obtener documento actual para borrar archivo viejo
       const resDoc = await pool.request()
         .input('pre_solicitud_id', sql.Int,     Number(preSolicitudId))
         .input('tipo_documento',   sql.VarChar, campo)
@@ -46,13 +43,10 @@ async function resubirDocumento(req, res) {
 
       const docActual = resDoc.recordset[0];
 
-      // Eliminar archivo físico anterior
       if (fs.existsSync(docActual.ruta_archivo)) {
         fs.unlinkSync(docActual.ruta_archivo);
       }
 
-      // Actualizar ruta en BD
-// Actualizar ruta en BD
 await pool.request()
   .input('ruta_archivo',   sql.VarChar, archivo.path)
   .input('nombre_archivo', sql.VarChar, archivo.originalname)
@@ -67,13 +61,11 @@ await pool.request()
     WHERE id = @id
   `);
 
-      // Limpiar evaluación anterior de ese documento
       await pool.request()
         .input('documento_id', sql.Int, docActual.id)
         .query(`DELETE FROM evaluacion_documentos WHERE documento_id = @documento_id`);
     }
 
-    // Volver a EN_CALIFICACION
     await pool.request()
       .input('id', sql.Int, Number(preSolicitudId))
       .query(`

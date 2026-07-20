@@ -93,7 +93,6 @@ async function detalle(id) {
 async function crear({ preSolicitudId, numeroExpediente, numeroMesaPartes, fechaPago, usuarioNombre }) {
   const pool = await getPool();
 
-  // Verificar que la pre-solicitud esté ADMISIBLE
   const resPre = await pool.request()
     .input('id', sql.Int, preSolicitudId)
     .query(`SELECT estado FROM pre_solicitudes WHERE id = @id`);
@@ -103,7 +102,6 @@ async function crear({ preSolicitudId, numeroExpediente, numeroMesaPartes, fecha
     throw new Error('Solo se pueden crear expedientes de pre-solicitudes ADMISIBLES.');
   }
 
-  // Verificar que no exista ya un expediente
   const resExiste = await pool.request()
     .input('id', sql.Int, preSolicitudId)
     .query(`SELECT id FROM expedientes WHERE pre_solicitud_id = @id AND activo = 1`);
@@ -129,7 +127,6 @@ async function crear({ preSolicitudId, numeroExpediente, numeroMesaPartes, fecha
 
     const expedienteId = resExp.recordset[0].id;
 
-    // Registrar etapa inicial en historial
     await new sql.Request(transaction)
       .input('expediente_id', sql.Int,     expedienteId)
       .input('etapa_nueva',   sql.VarChar, 'RECIBIDO')
@@ -144,7 +141,6 @@ async function crear({ preSolicitudId, numeroExpediente, numeroMesaPartes, fecha
 
     await transaction.commit();
 
-    // Notificar al ciudadano
     await notificarCiudadano({ preSolicitudId, etapaNueva: 'RECIBIDO', estadoNuevo: 'ACTIVO', numeroExpediente, comentario: null });
 
     return { expedienteId };
@@ -169,14 +165,12 @@ async function cambiarEtapa({ id, etapaNueva, estadoNuevo, comentario, usuarioId
   try {
     await transaction.begin();
 
-    // Actualizar expediente
     await new sql.Request(transaction)
       .input('etapa',  sql.VarChar, etapaNueva  || etapaActual)
       .input('estado', sql.VarChar, estadoNuevo || estadoActual)
       .input('id',     sql.Int,     id)
       .query(`UPDATE expedientes SET etapa = @etapa, estado = @estado WHERE id = @id`);
 
-    // Registrar en historial
     await new sql.Request(transaction)
       .input('expediente_id',  sql.Int,     id)
       .input('etapa_anterior', sql.VarChar, etapaActual)
@@ -193,7 +187,6 @@ async function cambiarEtapa({ id, etapaNueva, estadoNuevo, comentario, usuarioId
 
     await transaction.commit();
 
-    // Notificar al ciudadano
     await notificarCiudadano({
       preSolicitudId: pre_solicitud_id,
       etapaNueva:     etapaNueva  || etapaActual,

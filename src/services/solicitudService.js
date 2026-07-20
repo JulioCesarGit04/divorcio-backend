@@ -32,14 +32,12 @@ async function registrarPreSolicitud({ conyuges, documentos, inicioFormulario })
     const c2 = conyuges.find(c => c.tipo === 'DEMANDADO');
  
     const resPre = await new sql.Request(transaction)
-      // Cónyuge 1
       .input('nombres1',   sql.VarChar(100), c1.nombres)
       .input('apellidos1', sql.VarChar(100), c1.apellidos)
       .input('dni1',       sql.VarChar(8),   c1.dni)
       .input('telefono1',  sql.VarChar(15),  c1.telefono  || null)
       .input('correo1',    sql.VarChar(150), c1.correo    || null)
       .input('direccion1', sql.VarChar(255), c1.direccion)
-      // Cónyuge 2
       .input('nombres2',   sql.VarChar(100), c2.nombres)
       .input('apellidos2', sql.VarChar(100), c2.apellidos)
       .input('dni2',       sql.VarChar(8),   c2.dni)

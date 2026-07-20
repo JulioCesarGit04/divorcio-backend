@@ -1,11 +1,6 @@
 const service = require('../services/ProcedimientoService');
 const { sumarDiasHabiles: sumarDiasHabilesUtils, diasHabilesEntre } = require('../utils/diasHabiles');
 
-// ================================================================
-// IMPORTANTE: Renombramos la importación para evitar conflicto
-// con la función del controlador que se llama igual.
-// ================================================================
-
 const getPreExpedientes = async (req, res) => {
     try {
         const data = await service.getPreExpedientes();
@@ -359,9 +354,6 @@ const getHistorialTarjetas = async (req, res) => {
     }
 };
 
-// ================================================================
-// FUNCIONES DE DÍAS HÁBILES (usando el archivo utils)
-// ================================================================
 const getDiasHabilesEntre = async (req, res) => {
     try {
         const { inicio, fin } = req.query;
@@ -403,9 +395,6 @@ const sumarDiasHabiles = async (req, res) => {
     }
 };
 
-// ================================================================
-// EXPORTACIÓN
-// ================================================================
 module.exports = {
     sumarDiasHabiles,       
     getDiasHabilesEntre,

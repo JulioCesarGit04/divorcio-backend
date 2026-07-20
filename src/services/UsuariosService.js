@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 
 const UsuariosService = {
 
-    // ─── Listar usuarios ──────────────────────────────────────────────
     async listar(filtros = {}) {
         const pool = await getPool();
         const { nombre, correo, rol, activo } = filtros;
@@ -18,7 +17,6 @@ const UsuariosService = {
         return result.recordset;
     },
 
-    // ─── Obtener un usuario por ID ────────────────────────────────────
     async obtenerPorId(id) {
         const pool = await getPool();
         const result = await pool.request()
@@ -28,12 +26,10 @@ const UsuariosService = {
         return result.recordset[0] || null;
     },
 
-    // ─── Crear usuario ──────────────────────────────────────────────────
     async crear(datos) {
         const { nombre, correo, password, rol, usuario_creador } = datos;
         const pool = await getPool();
 
-        // Hashear contraseña
         const hash = await bcrypt.hash(password, 10);
 
         const result = await pool.request()
@@ -47,7 +43,6 @@ const UsuariosService = {
         return result.recordset[0];
     },
 
-    // ─── Actualizar usuario (sin password) ────────────────────────────
     async actualizar(id, datos) {
         const { nombre, correo, rol } = datos;
         const pool = await getPool();
@@ -62,7 +57,6 @@ const UsuariosService = {
         return result.recordset[0];
     },
 
-    // ─── Cambiar estado (habilitar/deshabilitar) ──────────────────────
     async cambiarEstado(id, activo) {
         const pool = await getPool();
         const result = await pool.request()
@@ -73,7 +67,6 @@ const UsuariosService = {
         return result.recordset[0];
     },
 
-    // ─── Cambiar contraseña ────────────────────────────────────────────
     async cambiarPassword(id, nuevaPassword) {
         const pool = await getPool();
         const hash = await bcrypt.hash(nuevaPassword, 10);

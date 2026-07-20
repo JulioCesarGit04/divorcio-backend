@@ -1,14 +1,6 @@
-// =============================================================
-// persistence/expediente.repository.js
-// Acceso a datos — ejecuta los stored procedures del módulo 4
-// =============================================================
-
 const { getPool, sql } = require('../config/db');
 
 /**
- * Ejecuta sp_consultar_expediente con DNI y número de expediente.
- * Retorna el expediente encontrado o null si no existe.
- *
  * @param {string} dni
  * @param {string} numeroExpediente
  * @returns {Promise<object|null>}
@@ -34,9 +26,6 @@ const consultarExpediente = async (dni, numeroExpediente) => {
 };
 
 /**
- * Ejecuta sp_historial_expediente para obtener todas las etapas
- * registradas de un expediente, ordenadas cronológicamente.
- *
  * @param {number} expedienteId
  * @returns {Promise<Array>}
  */
@@ -78,16 +67,13 @@ const seguimientoCompleto = async (dni, codigo) => {
     .input('codigo', sql.VarChar(50), codigo)
     .execute('sp_seguimiento_completo');
 
-  // Primer recordset → PRE
   const rowsPre  = result.recordsets[0];
-  // Segundo recordset → POST (puede estar vacío)
   const rowsPost = result.recordsets[1];
 
   if (!rowsPre || rowsPre.length === 0) return null;
 
   const pre  = rowsPre[0];
 
-  // Si viene NO_ENCONTRADO
   if (pre.tipo === 'NO_ENCONTRADO') return null;
 
   const post = rowsPost && rowsPost.length > 0 ? rowsPost[0] : null;

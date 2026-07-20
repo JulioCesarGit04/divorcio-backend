@@ -4,23 +4,17 @@ const {
     validarDocumentoObservado
 } = require('../services/plazoSubsanacionService');
 
-// ============================================
-// 1. PING
-// ============================================
 async function ping(req, res) {
     try {
         const pool = await getPool();
         const result = await pool.request().query('SELECT GETDATE() as hora_servidor');
         res.json({ ok: true, hora_servidor: result.recordset[0].hora_servidor });
     } catch (error) {
-        console.error('❌ Error en ping:', error);
+        console.error(' Error en ping:', error);
         res.status(500).json({ ok: false, mensaje: 'Error al obtener hora del servidor' });
     }
 }
 
-// ============================================
-// 2. OBTENER DOCUMENTOS OBSERVADOS
-// ============================================
 async function getDocumentosObservados(req, res) {
     try {
         const { id } = req.params;
@@ -29,8 +23,6 @@ async function getDocumentosObservados(req, res) {
         const pool = await getPool();
         const horaServidor = new Date();
 
-        // Verificar que la pre-solicitud pertenece al ciudadano logueado
-        // (conyuges no tiene FK a ciudadanos, se vincula por DNI)
         const preResult = await pool.request()
             .input('id', sql.Int, id)
             .input('id_usuario', sql.Int, id_usuario)
@@ -48,8 +40,6 @@ async function getDocumentosObservados(req, res) {
 
         const preSolicitud = preResult.recordset[0];
 
-        // Solo documentos OBSERVADO con observación real (no nula ni vacía),
-        // y solo la evaluación más reciente por documento (evita duplicados).
         const docsResult = await pool.request()
             .input('pre_solicitud_id', sql.Int, id)
             .query(`
@@ -79,7 +69,7 @@ async function getDocumentosObservados(req, res) {
             const validacion = validarDocumentoObservado(doc.evaluado_en, horaServidor);
             return {
                 ...doc,
-                fecha_limite_subsanacion: validacion.fechaLimite, // nombre que lee el frontend
+                fecha_limite_subsanacion: validacion.fechaLimite, 
                 plazo_valido: validacion.valido,
                 plazo_mensaje: validacion.mensajeUsuario,
                 dias_restantes: validacion.diasRestantes
@@ -100,14 +90,11 @@ async function getDocumentosObservados(req, res) {
         });
 
     } catch (error) {
-        console.error('❌ Error en getDocumentosObservados:', error);
+        console.error(' Error en getDocumentosObservados:', error);
         res.status(500).json({ ok: false, mensaje: 'Error interno del servidor' });
     }
 }
 
-// ============================================
-// 3. RESUBIR DOCUMENTOS
-// ============================================
 async function resubirDocumentos(req, res) {
     try {
         const { id } = req.params;
@@ -141,8 +128,6 @@ async function resubirDocumentos(req, res) {
             return res.status(400).json({ ok: false, mensaje: 'Solo se pueden subsanar documentos en estado OBSERVADA' });
         }
 
-        // Mismos filtros que en getDocumentosObservados: OBSERVADO + observación
-        // real + solo la evaluación más reciente por documento.
         const docsResult = await pool.request()
             .input('pre_solicitud_id', sql.Int, id)
             .query(`
@@ -200,7 +185,7 @@ async function resubirDocumentos(req, res) {
                 try {
                     fs.unlinkSync(doc.ruta_archivo);
                 } catch (err) {
-                    console.warn('⚠️ No se pudo eliminar archivo:', err.message);
+                    console.warn(' No se pudo eliminar archivo:', err.message);
                 }
             }
 
@@ -252,7 +237,7 @@ async function resubirDocumentos(req, res) {
         });
 
     } catch (error) {
-        console.error('❌ Error en resubirDocumentos:', error);
+        console.error(' Error en resubirDocumentos:', error);
         res.status(500).json({ ok: false, mensaje: 'Error interno del servidor', error: error.message });
     }
 }

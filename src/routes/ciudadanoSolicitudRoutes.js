@@ -2,7 +2,6 @@ const express = require('express');
 const router  = express.Router();
 const { getPool, sql } = require('../config/db');
 
-// Middleware simple para verificar sesión ciudadano
 function requireCiudadano(req, res, next) {
   if (!req.session?.ciudadano) {
     return res.status(401).json({ ok: false, mensaje: 'No autorizado.' });
@@ -10,7 +9,6 @@ function requireCiudadano(req, res, next) {
   next();
 }
 
-// Listar mis pre-solicitudes (busca en SOLICITANTE o DEMANDADO)
 router.get('/mis-solicitudes', requireCiudadano, async (req, res) => {
   try {
     const pool = await getPool();
@@ -38,7 +36,6 @@ router.get('/mis-solicitudes', requireCiudadano, async (req, res) => {
   }
 });
 
-// Detalle de una pre-solicitud con documentos y observaciones
 router.get('/mis-solicitudes/:id', requireCiudadano, async (req, res) => {
   try {
     const pool = await getPool();
@@ -78,7 +75,6 @@ router.get('/mis-solicitudes/:id', requireCiudadano, async (req, res) => {
   }
 });
 
-// Seguimiento de expediente por DNI del solicitante
 router.get('/seguimiento/:dni', async (req, res) => {
   try {
     const pool = await getPool();
@@ -105,7 +101,6 @@ router.get('/seguimiento/:dni', async (req, res) => {
   }
 });
 
-// Detalle de expediente con historial
 router.get('/seguimiento/detalle/:id', requireCiudadano, async (req, res) => {
   try {
     const pool = await getPool();

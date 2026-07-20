@@ -26,7 +26,7 @@ const registrarPagoCopias = async (req, res) => {
         const result = await service.registrarPagoCopias(id, fecha_pago_copias);
         res.json({ ok: true, data: result });
     } catch (err) {
-        console.error('❌ Error en registrarPagoCopias:', err.message);
+        console.error(' Error en registrarPagoCopias:', err.message);
         res.status(500).json({ ok: false, mensaje: err.message });
     }
 };

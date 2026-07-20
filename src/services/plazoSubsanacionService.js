@@ -1,8 +1,3 @@
-/**
- * Servicio completo para gestión de plazos de subsanación de documentos
- * Ley N° 27444, Art. 36.4: Plazo legal de 2 días hábiles
- */
-
 function sumarDiasHabiles(fechaInicio, dias) {
   const resultado = new Date(fechaInicio);
   let sumados = 0;

@@ -1,19 +1,5 @@
-// =============================================================
-// controllers/expediente.controller.js
-// Recibe HTTP, delega en el service, responde JSON
-// No contiene lógica de negocio ni acceso directo a la BD
-// =============================================================
-
 const service = require('../services/ConsultaExpedienteService');
 
-/**
- * POST /api/expediente/consultar
- *
- * Body: { dni, numeroExpediente }
- *
- * Responde con el expediente y su historial completo de etapas.
- * Si no existe, el service lanza un error 404 que captura errorHandler.
- */
 const consultar = async (req, res, next) => {
   try {
     const { dni, numeroExpediente } = req.body;
@@ -30,7 +16,6 @@ const consultar = async (req, res, next) => {
       });
     }
 
-    // 🔥 no romper si falla
     try {
       await service.registrarConsulta(dni, numeroExpediente);
     } catch (e) {
@@ -46,14 +31,6 @@ const consultar = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/expediente/:id/historial
- *
- * Params: { id } — ID numérico del expediente
- *
- * Devuelve solo el array de etapas del historial.
- * Útil para refrescar el historial sin volver a validar DNI.
- */
 const historial = async (req, res, next) => {
   try {
     const expedienteId = parseInt(req.params.id, 10);

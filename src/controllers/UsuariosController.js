@@ -1,6 +1,4 @@
 const UsuariosService = require('../services/UsuariosService');
-
-// ─── Listar usuarios ──────────────────────────────────────────────────
 const listar = async (req, res) => {
     try {
         const { nombre, correo, rol, activo } = req.query;
@@ -11,7 +9,6 @@ const listar = async (req, res) => {
     }
 };
 
-// ─── Obtener un usuario ──────────────────────────────────────────────
 const obtener = async (req, res) => {
     try {
         const { id } = req.params;
@@ -25,18 +22,15 @@ const obtener = async (req, res) => {
     }
 };
 
-// ─── Crear usuario ─────────────────────────────────────────────────────
 const crear = async (req, res) => {
     try {
         const { nombre, correo, password, rol } = req.body;
         const usuario_creador = req.session?.usuario?.nombre || 'Sistema';
 
-        // Validaciones básicas
         if (!nombre || !correo || !password || !rol) {
             return res.status(400).json({ ok: false, mensaje: 'Todos los campos son obligatorios' });
         }
 
-        // Validar rol permitido
         if (!['ADMINISTRADOR', 'ASISTENTE'].includes(rol)) {
             return res.status(400).json({ ok: false, mensaje: 'Rol no válido' });
         }
@@ -51,7 +45,6 @@ const crear = async (req, res) => {
     }
 };
 
-// ─── Actualizar usuario ───────────────────────────────────────────────
 const actualizar = async (req, res) => {
     try {
         const { id } = req.params;
@@ -71,7 +64,6 @@ const actualizar = async (req, res) => {
     }
 };
 
-// ─── Cambiar estado (habilitar/deshabilitar) ────────────────────────
 const cambiarEstado = async (req, res) => {
     try {
         const { id } = req.params;
@@ -81,7 +73,6 @@ const cambiarEstado = async (req, res) => {
             return res.status(400).json({ ok: false, mensaje: 'El campo "activo" debe ser booleano' });
         }
 
-        // No permitir deshabilitar al propio usuario que hace la petición
         if (req.session?.usuario?.id === parseInt(id)) {
             return res.status(403).json({ ok: false, mensaje: 'No puedes deshabilitar tu propia cuenta' });
         }
@@ -96,7 +87,6 @@ const cambiarEstado = async (req, res) => {
     }
 };
 
-// ─── Cambiar contraseña (opcional) ───────────────────────────────────
 const cambiarPassword = async (req, res) => {
     try {
         const { id } = req.params;

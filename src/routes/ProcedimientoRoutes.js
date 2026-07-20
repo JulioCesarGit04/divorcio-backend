@@ -4,7 +4,6 @@ const upload = require('../config/multer');
 
 const router = Router();
 
-
 const validarSesion = (req, res, next) => {
     if (!req.session?.usuario) {
         return res.status(401).json({ ok: false, mensaje: 'No hay sesión activa.' });
@@ -20,14 +19,11 @@ const soloAdmin = (req, res, next) => {
 };
 
 
-
-
 router.get('/pre-expedientes', validarSesion, controller.getPreExpedientes);
 
 router.get('/historial', controller.getHistorialGlobal);
 
 router.get('/historial/tarjetas', controller.getHistorialTarjetas);
-
 
 router.post('/expedientes/vincular', validarSesion, controller.vincularExpediente);
 

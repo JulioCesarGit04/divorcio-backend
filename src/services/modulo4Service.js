@@ -1,4 +1,3 @@
-// services/modulo4Service.js
 const { getPool, sql } = require('../config/db');
 
 const registrarSegundoPago = async (expediente_id, fecha_pago) => {

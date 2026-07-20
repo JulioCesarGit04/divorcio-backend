@@ -1,18 +1,9 @@
-// =============================================================
-// models/Expediente.js
-// Define la forma del objeto Expediente entre las capas
-// =============================================================
-
-/**
- * Clase que representa un expediente de divorcio municipal.
- * Se usa para estandarizar la respuesta entre service → controller → cliente.
- */
 class Expediente {
   /**
    * @param {number}  id
    * @param {string}  numeroExpediente
    * @param {string}  estadoActual
-   * @param {Array}   historial  — se carga en el service si es requerido
+   * @param {Array}   historial
    */
   constructor(id, numeroExpediente, estadoActual, historial = []) {
     this.id = id;
@@ -21,10 +12,6 @@ class Expediente {
     this.historial = historial;
   }
 
-  /**
-   * Convierte el estado a un formato legible con etiqueta de color.
-   * Útil para que el frontend muestre badges sin lógica extra.
-   */
   get estadoInfo() {
   const mapa = {
     EN_CALIFICACION: {
@@ -47,7 +34,6 @@ class Expediente {
       color: 'danger',
       mensaje: 'Su solicitud no cumple los requisitos y fue rechazada.'
     },
-    // POST
     RECIBIDO: {
       etiqueta: 'Expediente recibido',
       color: 'info',
@@ -84,9 +70,6 @@ class Expediente {
   );
 }
 
-  /**
-   * Serializa el expediente listo para enviar al cliente.
-   */
   toJSON() {
     return {
       id: this.id,

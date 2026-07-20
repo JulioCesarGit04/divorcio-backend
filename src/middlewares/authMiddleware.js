@@ -32,13 +32,10 @@ function requireAdmin(req, res, next) {
   next();
 }
 
-// ⚠️ AJUSTAR: reemplaza 'req.session.ciudadano' por el nombre real
-// que usa tu ciudadanoAuthController al loguear (ej: req.session.ciudadano = {...})
 function requireAuthCiudadano(req, res, next) {
   if (!req.session || !req.session.ciudadano) {
     return res.status(401).json({ ok: false, mensaje: 'No autorizado. Inicia sesión.' });
   }
-  // Normalizamos a req.user para no tocar el resto del controlador
   req.user = { id_usuario: req.session.ciudadano.id };
   next();
 }

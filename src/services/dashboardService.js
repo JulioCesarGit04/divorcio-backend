@@ -1,17 +1,10 @@
 const { getPool, sql } = require('../config/db');
-
-/**
- * Obtiene el tiempo promedio de envío (KPI 1)
- */
 const getTiempoPromedioEnvio = async () => {
     const pool = await getPool();
     const result = await pool.request().execute('sp_KPI_TiempoPromedioEnvioSolicitudes');
     return result.recordsets[0] || [];
 };
 
-/**
- * Obtiene el porcentaje de audiencias dentro del plazo (KPI 2)
- */
 const getAudienciasDentroPlazo = async (fechaDesde, fechaHasta) => {
     const pool = await getPool();
     const request = pool.request();
@@ -20,10 +13,6 @@ const getAudienciasDentroPlazo = async (fechaDesde, fechaHasta) => {
     const result = await request.execute('sp_KPI_AudienciasDentroPlazo');
     return result.recordsets[0] || [];
 };
-
-/**
- * Obtiene el porcentaje de disolución en plazo (KPI 3)
- */
 const getDisolucionEnPlazo = async (fechaDesde, fechaHasta) => {
     const pool = await getPool();
     const request = pool.request();
@@ -33,9 +22,6 @@ const getDisolucionEnPlazo = async (fechaDesde, fechaHasta) => {
     return result.recordsets[0] || [];
 };
 
-/**
- * Obtiene el porcentaje de expedientes con observaciones (KPI 4)
- */
 const getExpedientesConObservaciones = async (fechaDesde, fechaHasta) => {
     const pool = await getPool();
     const request = pool.request();
@@ -45,9 +31,6 @@ const getExpedientesConObservaciones = async (fechaDesde, fechaHasta) => {
     return result.recordsets[0] || [];
 };
 
-/**
- * Obtiene el porcentaje de documentos subsanados en plazo (KPI 5)
- */
 const getDocumentosSubsanadosPlazo = async (fechaDesde, fechaHasta) => {
     const pool = await getPool();
     const request = pool.request();
@@ -57,10 +40,6 @@ const getDocumentosSubsanadosPlazo = async (fechaDesde, fechaHasta) => {
     return result.recordsets[0] || [];
 };
 
-/**
- * Obtiene el resumen general del dashboard (gráficos y tablas)
- * NOTA: Esta función no usa los KPIs, sino sp_dashboard_resumen
- */
 const getResumenDashboard = async (filtros = {}) => {
     const { etapa, fecha_desde, fecha_hasta, top } = filtros;
     const pool = await getPool();

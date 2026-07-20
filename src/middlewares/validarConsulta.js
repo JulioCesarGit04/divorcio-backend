@@ -1,28 +1,13 @@
-// =============================================================
-// middlewares/validarConsulta.js
-// Valida los parámetros de entrada antes de llegar al controller
-// =============================================================
-
-/**
- * Middleware que valida que el body contenga:
- *  - dni: exactamente 8 dígitos numéricos
- *  - numeroExpediente: string no vacío
- *
- * Si alguno falla, responde 400 con el detalle del error.
- * Si todo es correcto, llama a next().
- */
 const validarConsulta = (req, res, next) => {
   const { dni, numeroExpediente } = req.body;
   const errores = [];
 
-  // Validar DNI
   if (!dni) {
     errores.push('El campo dni es requerido.');
   } else if (!/^\d{8}$/.test(dni.trim())) {
     errores.push('El DNI debe contener exactamente 8 dígitos numéricos.');
   }
 
-  // Validar número de expediente
   if (!numeroExpediente) {
     errores.push('El campo numeroExpediente es requerido.');
   } else if (typeof numeroExpediente !== 'string' || numeroExpediente.trim().length === 0) {
@@ -39,7 +24,6 @@ const validarConsulta = (req, res, next) => {
     });
   }
 
-  // Limpiar espacios y normalizar antes de pasar
   req.body.dni = dni.trim();
   req.body.numeroExpediente = numeroExpediente.trim().toUpperCase();
 

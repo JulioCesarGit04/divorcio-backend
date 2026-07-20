@@ -88,7 +88,7 @@ console.log(' usuarioId:', usuarioId);
 console.log(' evaluaciones a guardar:', JSON.stringify(evaluaciones, null, 2));
 
 for (const ev of evaluaciones) {
-  console.log(`📊 Guardando documento ${ev.documentoId} como ${ev.estado}`);
+  console.log(` Guardando documento ${ev.documentoId} como ${ev.estado}`);
   await new sql.Request(transaction)
     .input('pre_solicitud_id', sql.Int,     preSolicitudId)
     .input('documento_id',     sql.Int,     ev.documentoId)
@@ -102,7 +102,7 @@ for (const ev of evaluaciones) {
         (@pre_solicitud_id, @documento_id, @estado, @observacion, @usuario_id)
     `);
 }
-console.log('📊 Evaluaciones guardadas correctamente');
+console.log(' Evaluaciones guardadas correctamente');
 
     const tieneInadmisible = evaluaciones.some((e) => e.estado === 'INADMISIBLE');
     const tieneObservado   = evaluaciones.some((e) => e.estado === 'OBSERVADO');
@@ -142,12 +142,12 @@ console.log('📊 Evaluaciones guardadas correctamente');
     return { nuevoEstado };
 
   } catch (err) {
-    console.error('❌ ERROR REAL en evaluarDocumentos:', err.message);
+    console.error(' ERROR REAL en evaluarDocumentos:', err.message);
     console.error(err);
     try {
       await transaction.rollback();
     } catch (rollbackErr) {
-      console.error('⚠️ Error adicional al intentar rollback:', rollbackErr.message);
+      console.error(' Error adicional al intentar rollback:', rollbackErr.message);
     }
     throw err;
   }

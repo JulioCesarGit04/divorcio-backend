@@ -1,9 +1,4 @@
 const service = require('../services/dashboardService');
-
-/**
- * GET /api/dashboard/resumen
- * Retorna datos para gráficos y tablas (sp_dashboard_resumen)
- */
 const getResumen = async (req, res) => {
     try {
         const { etapa, fecha_desde, fecha_hasta, top } = req.query;
@@ -15,16 +10,10 @@ const getResumen = async (req, res) => {
     }
 };
 
-/**
- * GET /api/dashboard/completo
- * Retorna los 5 KPIs en un solo objeto
- * Espera query params: fecha_desde, fecha_hasta (opcionales)
- */
 const getDashboardCompleto = async (req, res) => {
     try {
         const { fecha_desde, fecha_hasta } = req.query;
 
-        // Ejecutar los 5 KPIs en paralelo
         const [
             tiempoPromedioEnvio,
             audienciasPlazo,
@@ -39,7 +28,6 @@ const getDashboardCompleto = async (req, res) => {
             service.getDocumentosSubsanadosPlazo(fecha_desde, fecha_hasta)
         ]);
 
-        // Asegurar que cada KPI sea un array (el frontend espera arrays)
         const data = {
             tiempoPromedioEnvio: Array.isArray(tiempoPromedioEnvio) ? tiempoPromedioEnvio : [tiempoPromedioEnvio],
             audienciasPlazo: Array.isArray(audienciasPlazo) ? audienciasPlazo : [audienciasPlazo],
@@ -55,9 +43,6 @@ const getDashboardCompleto = async (req, res) => {
     }
 };
 
-/**
- * Métodos individuales (opcionales, por si se necesitan)
- */
 const getTiempoPromedioEnvio = async (req, res) => {
     try {
         const data = await service.getTiempoPromedioEnvio();

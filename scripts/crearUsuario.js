@@ -30,13 +30,13 @@ async function crearUsuarios() {
         INSERT INTO usuarios (nombre, correo, password, rol)
         VALUES (@nombre, @correo, @password, @rol)
       `);
-    console.log(`✅ Usuario creado: ${u.correo} / ${u.password}`);
+    console.log(` Usuario creado: ${u.correo} / ${u.password}`);
   }
 
   process.exit(0);
 }
 
 crearUsuarios().catch((err) => {
-  console.error('❌ Error:', err.message);
+  console.error(' Error:', err.message);
   process.exit(1);
 });

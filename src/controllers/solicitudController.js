@@ -21,24 +21,15 @@ async function crearPreSolicitud(req, res) {
     const c2 = typeof conyuge2 === 'string' ? JSON.parse(conyuge2) : conyuge2;
     const errores = [];
 
-    // =============================================================
-    // 🔥 CORRECCIÓN: Convertir UTC a hora Perú (UTC-5)
-    // =============================================================
     let inicioFormularioPeru = null;
     if (inicioFormulario) {
       const fechaUTC = new Date(inicioFormulario);
-      // Restar 5 horas para obtener hora Perú
       inicioFormularioPeru = new Date(fechaUTC.getTime() - 5 * 60 * 60 * 1000);
     } else {
-      // Si no viene, usar la hora actual en Perú
       inicioFormularioPeru = new Date();
-      // Ajustar a hora Perú (restar 5 horas)
       inicioFormularioPeru = new Date(inicioFormularioPeru.getTime() - 5 * 60 * 60 * 1000);
     }
 
-    // =============================================================
-    // Validaciones
-    // =============================================================
     if (!/^\d{8}$/.test(c1.dni)) errores.push('DNI del solicitante debe tener 8 dígitos.');
     if (!/^\d{8}$/.test(c2.dni)) errores.push('DNI del demandado debe tener 8 dígitos.');
 

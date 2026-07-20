@@ -9,7 +9,6 @@ function generarCodigo() {
 async function registrar({ nombres, apellidos, dni, sexo, telefono, correo, password }) {
   const pool = await getPool();
 
-  // Verificar duplicados
   const existe = await pool.request()
     .input('correo', sql.VarChar, correo)
     .input('dni', sql.VarChar, dni)

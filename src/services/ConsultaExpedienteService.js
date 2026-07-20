@@ -1,17 +1,8 @@
-// =============================================================
-// services/expediente.service.js
-// Lógica de negocio del módulo 4
-// =============================================================
-
 const repository = require('../persistence/ConsultaExpedienteRepository');
 const Expediente = require('../models/ConsultaExpediente');
 const HistorialExpediente = require('../models/ConsultaHistorialExpediente');
 
 /**
- * Consulta un expediente por DNI y número de expediente.
- * Valida que el expediente exista en la base de datos.
- * Retorna el expediente sin historial (para la consulta rápida).
- *
  * @param {string} dni
  * @param {string} numeroExpediente
  * @returns {Promise<Expediente>}
@@ -33,9 +24,6 @@ const consultarExpediente = async (dni, numeroExpediente) => {
 };
 
 /**
- * Obtiene el historial completo de etapas de un expediente.
- * Retorna un array vacío si aún no hay etapas registradas.
- *
  * @param {number} expedienteId
  * @returns {Promise<HistorialExpediente[]>}
  */
@@ -48,9 +36,6 @@ const obtenerHistorial = async (expedienteId) => {
 };
 
 /**
- * Consulta el expediente e incluye su historial completo.
- * Operación compuesta — usada en la consulta principal del ciudadano.
- *
  * @param {string} dni
  * @param {string} numeroExpediente
  * @returns {Promise<Expediente>}
@@ -61,7 +46,6 @@ const consultarExpedienteConHistorial = async (dni, numeroExpediente) => {
   try {
     expediente = await consultarExpediente(dni, numeroExpediente);
   } catch (error) {
-    // 🔥 Registrar incluso si falla
     await repository.registrarConsulta(dni, numeroExpediente);
     throw error;
   }
@@ -85,7 +69,6 @@ const seguimientoCompleto = async (dni, codigo) => {
 
   const { pre, post } = data;
 
-  // Historial PRE siempre
   const historialPre = await repository.obtenerHistorialPre(pre.id);
 
   const resultado = {

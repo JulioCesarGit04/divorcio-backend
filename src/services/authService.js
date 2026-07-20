@@ -27,7 +27,6 @@ async function login(correo, password) {
     throw new Error('Credenciales incorrectas.');
   }
 
-  // No devolver el hash
   delete usuario.password;
   return usuario;
 }

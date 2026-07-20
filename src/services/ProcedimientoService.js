@@ -1,14 +1,12 @@
 const { getPool, sql } = require('../config/db');
 const { sumarDiasHabiles, diasHabilesEntre, diasHabilesRestantes } = require('../utils/diasHabiles');
 
-
 const getPreExpedientes = async () => {
     const pool = await getPool();
     const result = await pool.request()
         .execute('sp_pre_expedientes_listar');
     return result.recordset;
 };
-
 
 const vincularExpediente = async (pre_solicitud_id, numero_mesa_partes, fecha_pago, usuario) => {
     const pool = await getPool();
@@ -39,7 +37,6 @@ const getExpedientes = async (estado, etapa, numero_mesa_partes, dni) => {
         .execute('sp_expedientes_listar');
     return result.recordset;
 };
-
 
 const getExpedienteById = async (id) => {
     const pool = await getPool();
@@ -274,7 +271,6 @@ const getHistorialExpediente = async (expediente_id) => {
     return result.recordset;
 };
 
-
 const reemplazarDocumentoCiudadano = async (documento_id, nueva_ruta, reemplazado_por) => {
     const pool = await getPool();
     const result = await pool.request()
@@ -284,7 +280,6 @@ const reemplazarDocumentoCiudadano = async (documento_id, nueva_ruta, reemplazad
         .execute('sp_reemplazar_documento_ciudadano');
     return result.recordset[0];
 };
-
 
 const obtenerUltimoCorrelativo = async (tipoDocumento) => {
     const pool = await getPool();
@@ -303,7 +298,6 @@ const verificarUnicidadNumeroDocumento = async (tipoDocumento, numeroDocumento) 
     return result.recordset[0]?.existe === 1;
 };
 
-
 const verificarUnicidadCorrelativo = async (tipoDocumento, correlativo, anio, dependencia) => {
     const pool = await getPool();
     const result = await pool.request()
@@ -314,8 +308,6 @@ const verificarUnicidadCorrelativo = async (tipoDocumento, correlativo, anio, de
         .execute('sp_verificar_unicidad_correlativo');
     return result.recordset[0]?.existe === 1;
 };
-
-
 
 const getHistorialGlobal = async (pre_solicitud_id, expediente_id) => {
     const pool = await getPool();
@@ -341,7 +333,6 @@ const getHistorialTarjetas = async (filtros = {}) => {
     const result = await request.execute('sp_historial_listado_tarjetas');
     return result.recordset;
 };
-
 
 module.exports = {   
     getHistorialTarjetas,

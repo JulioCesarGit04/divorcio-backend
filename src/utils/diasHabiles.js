@@ -1,36 +1,27 @@
-// src/utils/diasHabiles.js
-// ================================================================
-// FERIADOS FIJOS (mes: 0-indexado, como en JS)
-// ================================================================
 const FERIADOS_FIJOS = [
-    { mes: 0, dia: 1, nombre: 'Año Nuevo' },                             // 1/ene
-    { mes: 4, dia: 1, nombre: 'Día del Trabajo' },                        // 1/may
-    { mes: 5, dia: 7, nombre: 'Batalla de Arica y Día de la Bandera' },  // 7/jun
-    { mes: 5, dia: 29, nombre: 'Día de San Pedro y San Pablo' },          // 29/jun
-    { mes: 6, dia: 23, nombre: 'Día de la Fuerza Aérea del Perú' },       // 23/jul
-    { mes: 6, dia: 28, nombre: 'Fiestas Patrias' },                       // 28/jul
-    { mes: 6, dia: 29, nombre: 'Fiestas Patrias' },                       //  29/jul
-    { mes: 7, dia: 6, nombre: 'Batalla de Junín' },                       // 6/ago
-    { mes: 7, dia: 30, nombre: 'Santa Rosa de Lima' },                    // 30/ago
-    { mes: 9, dia: 8, nombre: 'Combate de Angamos' },                     // 8/oct
-    { mes: 10, dia: 1, nombre: 'Día de Todos los Santos' },               // 1/nov
-    { mes: 11, dia: 8, nombre: 'Inmaculada Concepción' },                 // 8/dic
-    { mes: 11, dia: 9, nombre: 'Batalla de Ayacucho' },                   // 9/dic
-    { mes: 11, dia: 25, nombre: 'Navidad' }                               // 25/dic
+    { mes: 0, dia: 1, nombre: 'Año Nuevo' },                            
+    { mes: 4, dia: 1, nombre: 'Día del Trabajo' },                       
+    { mes: 5, dia: 7, nombre: 'Batalla de Arica y Día de la Bandera' },  
+    { mes: 5, dia: 29, nombre: 'Día de San Pedro y San Pablo' },         
+    { mes: 6, dia: 23, nombre: 'Día de la Fuerza Aérea del Perú' },       
+    { mes: 6, dia: 28, nombre: 'Fiestas Patrias' },                       
+    { mes: 6, dia: 29, nombre: 'Fiestas Patrias' },                       
+    { mes: 7, dia: 6, nombre: 'Batalla de Junín' },                       
+    { mes: 7, dia: 30, nombre: 'Santa Rosa de Lima' },                    
+    { mes: 9, dia: 8, nombre: 'Combate de Angamos' },                    
+    { mes: 10, dia: 1, nombre: 'Día de Todos los Santos' },               
+    { mes: 11, dia: 8, nombre: 'Inmaculada Concepción' },                 
+    { mes: 11, dia: 9, nombre: 'Batalla de Ayacucho' },                   
+    { mes: 11, dia: 25, nombre: 'Navidad' }                               
 ];
 
-// ================================================================
-// DÍAS NO LABORABLES (sector público)
-// ================================================================
 const DIAS_NO_LABORABLES = [
-    { mes: 4, dia: 2, nombre: 'Día no laborable' },   // 2/may
-    { mes: 6, dia: 27, nombre: 'Día no laborable' },  // 27/jul
-    { mes: 11, dia: 26, nombre: 'Día no laborable' }  // 26/dic
+    { mes: 4, dia: 2, nombre: 'Día no laborable' },   
+    { mes: 6, dia: 27, nombre: 'Día no laborable' },  
+    { mes: 11, dia: 26, nombre: 'Día no laborable' }  
 ];
 
-// ================================================================
-// CÁLCULO DE SEMANA SANTA (Jueves y Viernes Santo)
-// ================================================================
+
 function calcularSemanaSanta(year) {
     const a = year % 19;
     const b = year % 4;
@@ -66,9 +57,6 @@ function calcularSemanaSanta(year) {
     };
 }
 
-// ================================================================
-// CACHE DE FERIADOS (por año)
-// ================================================================
 const cacheFeriados = {};
 
 function getFeriados(year) {
@@ -100,9 +88,6 @@ function getFeriados(year) {
     return cacheFeriados[year];
 }
 
-// ================================================================
-// FUNCIONES PRINCIPALES
-// ================================================================
 function esFeriado(fecha) {
     const year = fecha.getFullYear();
     const month = String(fecha.getMonth() + 1).padStart(2, '0');
@@ -140,9 +125,7 @@ function diasHabilesEntre(fechaInicio, fechaFin) {
     }
     return contador;
 }
-// Agrega esta función después de diasHabilesEntre
 function diasHabilesRestantes(fechaInicio, fechaFin) {
-    // Cuenta los días hábiles desde el día siguiente a fechaInicio hasta fechaFin (inclusive)
     let contador = 0;
     let fecha = new Date(fechaInicio.getFullYear(), fechaInicio.getMonth(), fechaInicio.getDate());
     fecha.setDate(fecha.getDate() + 1); // Empezamos desde el día siguiente
