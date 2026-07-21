@@ -5,7 +5,6 @@ const getResumen = async (req, res) => {
         const data = await service.getResumenDashboard({ etapa, fecha_desde, fecha_hasta, top });
         res.json({ ok: true, data });
     } catch (error) {
-        console.error('Error en getResumen:', error);
         res.status(500).json({ ok: false, mensaje: 'Error al obtener el resumen del dashboard', error: error.message });
     }
 };
@@ -38,7 +37,6 @@ const getDashboardCompleto = async (req, res) => {
 
         res.json({ ok: true, data });
     } catch (error) {
-        console.error('Error en getDashboardCompleto:', error);
         res.status(500).json({ ok: false, mensaje: 'Error al obtener el dashboard completo', error: error.message });
     }
 };
@@ -48,7 +46,6 @@ const getTiempoPromedioEnvio = async (req, res) => {
         const data = await service.getTiempoPromedioEnvio();
         res.json({ ok: true, data });
     } catch (error) {
-        console.error('Error en getTiempoPromedioEnvio:', error);
         res.status(500).json({ ok: false, mensaje: 'Error al obtener tiempo promedio de envío', error: error.message });
     }
 };

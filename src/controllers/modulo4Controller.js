@@ -65,7 +65,6 @@ const subirResolucionDisolucion = async (req, res) => {
             mensaje: result?.mensaje || 'Resolución subida correctamente'
         });
     } catch (err) {
-        console.error('❌ Error en subirResolucionDisolucion:', err.message);
         res.status(500).json({ ok: false, mensaje: err.message });
     }
 };
@@ -83,7 +82,6 @@ const avanzarArchivamiento = async (req, res) => {
         const result = await service.avanzarArchivamiento(id, motivo, usuario);
         res.json({ ok: true, data: result });
     } catch (err) {
-        console.error('❌ Error en avanzarArchivamiento:', err.message);
         res.status(500).json({ ok: false, mensaje: err.message });
     }
 };
@@ -96,8 +94,6 @@ const registrarCargosExternos = async (req, res) => {
         const reniec = files?.reniec?.[0];
         const recibido_por = req.session?.usuario?.nombre || 'Sistema';
         const { observaciones } = req.body;
-
-        console.log(' Archivos recibidos:', { sunarp: sunarp?.filename, reniec: reniec?.filename });
 
         if (!sunarp || !reniec) {
             return res.status(400).json({ ok: false, mensaje: 'Debe subir ambos archivos (SUNARP y RENIEC)' });

@@ -47,10 +47,8 @@ app.use('/api/revision',      require('./routes/revisionRoutes'));
 app.use('/api/documentos', require('./routes/documentoRoutes'));
 app.use('/api/ciudadano', require('./routes/ciudadanoSolicitudRoutes'));
 app.use('/api/chat',          require('./routes/ChatRoutes'));
-//modulo 03
 app.use('/api/procedimiento', require('./routes/ProcedimientoRoutes'));
 
-// Módulo 4 (Disolución y Archivamiento) - NUEVO
 app.use('/api/procedimiento', require('./routes/modulo4Routes'));
 app.use('/api/expedientes', require('./routes/expedienteRoutes'));
 

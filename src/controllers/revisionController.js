@@ -32,7 +32,6 @@ async function evaluar(req, res) {
       return res.status(400).json({ ok: false, mensaje: 'Debes evaluar al menos un documento.' });
     }
 
-    // Validar que documentos OBSERVADO tengan observación
     const observadoSinMensaje = evaluaciones.find(
       (e) => e.estado === 'OBSERVADO' && (!e.observacion || !e.observacion.trim())
     );

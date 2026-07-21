@@ -7,7 +7,6 @@ async function enviarChat(req, res) {
     }
 
     const payload = req.body;
-    console.log('Payload recibido:', payload);
 
     const response = await fetch(webhookUrl, {
       method: 'POST',
@@ -18,11 +17,9 @@ async function enviarChat(req, res) {
     });
 
     const responseText = await response.text();
-    console.log('Respuesta de n8n:', response.status, responseText);
 
     return res.status(response.status).send(responseText);
   } catch (err) {
-    console.error('Error en enviarChat:', err.message);
     return res.status(500).json({ ok: false, mensaje: 'Error al reenviar la solicitud al webhook.', error: err.message });
   }
 }

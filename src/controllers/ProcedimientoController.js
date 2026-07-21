@@ -209,7 +209,6 @@ const registrarResultadoAudiencia = async (req, res) => {
         );
         res.json({ ok: true, data: result });
     } catch (err) {
-        console.error('Error en registrarResultadoAudiencia:', err);
         res.status(500).json({ ok: false, mensaje: err.message });
     }
 };

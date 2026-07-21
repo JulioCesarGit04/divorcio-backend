@@ -82,13 +82,8 @@ if (!['EN_CALIFICACION', 'OBSERVADA'].includes(estadoActual)) {
   throw new Error('Esta pre-solicitud no puede modificarse.');
 }
 
-console.log(' ====== EVALUANDO DOCUMENTOS ======');
-console.log(' preSolicitudId:', preSolicitudId);
-console.log(' usuarioId:', usuarioId);
-console.log(' evaluaciones a guardar:', JSON.stringify(evaluaciones, null, 2));
 
 for (const ev of evaluaciones) {
-  console.log(` Guardando documento ${ev.documentoId} como ${ev.estado}`);
   await new sql.Request(transaction)
     .input('pre_solicitud_id', sql.Int,     preSolicitudId)
     .input('documento_id',     sql.Int,     ev.documentoId)
@@ -102,7 +97,6 @@ for (const ev of evaluaciones) {
         (@pre_solicitud_id, @documento_id, @estado, @observacion, @usuario_id)
     `);
 }
-console.log(' Evaluaciones guardadas correctamente');
 
     const tieneInadmisible = evaluaciones.some((e) => e.estado === 'INADMISIBLE');
     const tieneObservado   = evaluaciones.some((e) => e.estado === 'OBSERVADO');

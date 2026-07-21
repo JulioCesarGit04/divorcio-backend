@@ -19,7 +19,6 @@ const consultar = async (req, res, next) => {
     try {
       await service.registrarConsulta(dni, numeroExpediente);
     } catch (e) {
-      console.warn('No se pudo registrar la consulta:', e.message);
     }
 
     res.status(200).json({

@@ -77,7 +77,6 @@ await pool.request()
     return res.json({ ok: true, mensaje: 'Documentos actualizados correctamente. La solicitud vuelve a revisión.' });
 
   } catch (err) {
-    console.error('Error al resubir documento:', err);
     return res.status(500).json({ ok: false, mensaje: 'Error interno del servidor.' });
   }
 }
